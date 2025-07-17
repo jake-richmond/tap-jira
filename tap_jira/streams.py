@@ -703,7 +703,20 @@ class IssueStream(JiraStream):
                 Property("labels", ArrayType(StringType)),
                 Property("timeestimate", IntegerType),
                 Property("aggregatetimeoriginalestimate", IntegerType),
-                Property("versions", ArrayType(StringType)),
+                Property(
+                  "versions",
+                  ArrayType(
+                    ObjectType(
+                      Property("id", StringType),
+                      Property("name", StringType),
+                      Property("description", StringType),
+                      Property("self", StringType),
+                      Property("archived", BooleanType),
+                      Property("released", BooleanType),
+                      Property("releaseDate", StringType),
+                    )
+                  )
+                ),
                 Property(
                     "issuelinks",
                     ArrayType(
