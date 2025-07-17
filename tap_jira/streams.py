@@ -1703,10 +1703,11 @@ class IssueStream(JiraStream):
     def post_process(self, row: Record, context: Context | None = None) -> Record:  # noqa: ARG002
         """Post-process the record.
 
-        - Add top-level `created` field.
+        - Add top-level `created` & `updated` fields.
         """
-        created = row.get("fields", {}).pop("created", None)
-        row["created"] = created
+        fields = row.get("fields", {})
+        row["created"] = fields.pop("created", None)
+        row["updated"] = fields.pop("updated", None)
         return row
 
     def get_child_context(self, record: dict, context: dict | None) -> dict:  # noqa: ARG002
