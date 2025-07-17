@@ -396,7 +396,7 @@ class IssueStream(JiraStream):
     name = "issues"
     path = "/search"
     primary_keys = ("id",)
-    replication_key = "id"
+    replication_key = "updated"
     replication_method = "INCREMENTAL"
     records_jsonpath = "$[issues][*]"  # Or override `parse_response`.
     instance_name = "issues"
@@ -3054,21 +3054,14 @@ class IssueChangeLogStream(JiraStream):
     """
 
     name = "issue_changelog"
-
     parent_stream_type = IssueStream
-
     ignore_parent_replication_keys = True
-
     path = "/issue/{issue_id}/changelog"
-
     replication_key = "created"
-
+    replication_method = "INCREMENTAL"
     primary_keys = ("id",)
-
     records_jsonpath = "$[values][*]"
-
     instance_name = "values"
-
     next_page_token_jsonpath = None  # type: ignore[assignment]
 
     schema = PropertiesList(
@@ -3114,19 +3107,12 @@ class IssueComments(JiraStream):
     """
 
     name = "issue_comments"
-
     parent_stream_type = IssueStream
-
     ignore_parent_replication_keys = True
-
     path = "/issue/{issue_id}/comment"
-
     primary_keys = ("id",)
-
     records_jsonpath = "$[comments][*]"
-
     instance_name = "comments"
-
     next_page_token_jsonpath = None  # type: ignore[assignment]
 
     schema = PropertiesList(
@@ -3178,19 +3164,14 @@ class IssueWorklogs(JiraStream):
     """
 
     name = "issue_worklogs"
-
     parent_stream_type = IssueStream
-
     ignore_parent_replication_keys = True
-
     path = "/issue/{issue_id}/worklog"
-
+    replication_key = "updated"
+    replication_method = "INCREMENTAL"
     primary_keys = ("id",)
-
     records_jsonpath = "$[worklogs][*]"
-
     instance_name = "worklogs"
-
     next_page_token_jsonpath = None  # type: ignore[assignment]
 
     schema = PropertiesList(
